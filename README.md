@@ -1,4 +1,4 @@
-## What's it for
+## What's it for?
 
 - To make a certain website feature more accessible to the visually impaired.
 
