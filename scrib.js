@@ -28,8 +28,10 @@ javascript: (function () {
 
   function clkParas() {
     const div = document.getElementById("work-body");
-    let ps = Array.from(div.querySelectorAll("p"));
-    for (p of ps) {
+    const paragraphs = div.querySelectorAll("p");
+    const ems = div.querySelectorAll("em");
+    let chunks = [...paragraphs, ...ems];
+    for (p of chunks) {
       p.scrollIntoView();
       cAndT(p);
       p.scrollIntoView();
