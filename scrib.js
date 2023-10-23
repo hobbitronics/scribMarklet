@@ -16,12 +16,15 @@ javascript: (function () {
       const y = rng.bottom;
       const t = document.elementFromPoint(x, y);
       if (t) {
-        t.click();
-        const inss = document.querySelectorAll("ins");
-        const ins = [...inss].find((el) => el.textContent.trim() === "");
-        if (ins) {
-          ins.textContent = "*";
-        }
+        const clickEvent = new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+          view: window,
+        });
+        t.dispatchEvent(clickEvent);
+        let inss = document.querySelectorAll("ins");
+        inss = [...inss].filter((el) => el.textContent.trim() == "");
+        inss.forEach((ins) => (ins.textContent = "*"));
       }
     }
   }
