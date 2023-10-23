@@ -28,7 +28,9 @@ javascript: (function () {
 
   function clkParas() {
     const div = document.getElementById("work-body");
-    const paragraphs = div.querySelectorAll("p");
+    const paragraphs = [...div.querySelectorAll("p")].filter(
+      (p) => !![...p.childNodes].find((n) => n.nodeType === Node.TEXT_NODE)
+    );
     const ems = div.querySelectorAll("em");
     let chunks = [...paragraphs, ...ems];
     for (p of chunks) {
