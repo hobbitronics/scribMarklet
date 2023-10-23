@@ -36,7 +36,6 @@ javascript: (function () {
     for (p of chunks) {
       p.scrollIntoView();
       cAndT(p);
-      p.scrollIntoView();
     }
   }
 
