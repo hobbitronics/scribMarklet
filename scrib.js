@@ -1,68 +1,52 @@
 javascript: (function () {
-  function simulateClickAtEndOfTextNode(textNode) {
-    const range = document.createRange();
-    range.selectNodeContents(textNode);
-    range.collapse(false);
-
-    const selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-
-    const clickEvent = new MouseEvent("click", {
+  function clk(nd) {
+    const r = document.createRange();
+    r.selectNodeContents(nd);
+    r.collapse(false);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(r);
+    const evt = new MouseEvent("click", {
       bubbles: true,
       cancelable: true,
       view: window,
     });
-
-    const rangeRect = range.getBoundingClientRect();
-    const endX = rangeRect.right - 5; // Adjust this value to fine-tune the click position
-    const endY = rangeRect.bottom;
-
-    const clickTarget = document.elementFromPoint(endX, endY);
-
-    if (clickTarget) {
-      clickTarget.dispatchEvent(clickEvent);
-
-      const insElements = document.querySelectorAll("ins");
-      const openedEmptyElement = Array.from(insElements).find(
-        (el) => el.textContent.trim() === ""
-      );
-
-      if (openedEmptyElement) {
-        openedEmptyElement.textContent = "*";
+    const rng = r.getBoundingClientRect();
+    const x = rng.right - 5;
+    const y = rng.bottom;
+    const t = document.elementFromPoint(x, y);
+    if (t) {
+      t.dispatchEvent(evt);
+      const inss = document.querySelectorAll("ins");
+      const ins = Array.from(inss).find((el) => el.textContent.trim() === "");
+      if (ins) {
+        ins.textContent = "*";
       }
     }
   }
-
-  function clickOnLastCharacterAndTypeInEmptyContentEditable(paragraph) {
-    const textNodes = [...paragraph.childNodes].filter(
-      (node) => node.nodeType === Node.TEXT_NODE
+  function cAndT(par) {
+    const nodes = [...par.childNodes].filter(
+      (n) => n.nodeType === Node.TEXT_NODE
     );
-
-    if (textNodes.length > 0) {
-      const lastTextNode = textNodes[textNodes.length - 1];
-      simulateClickAtEndOfTextNode(lastTextNode);
+    if (nodes.length > 0) {
+      const last = nodes[nodes.length - 1];
+      clk(last);
     }
   }
-
-  function processParagraphs() {
-    const workBody = document.getElementById("work-body");
-    let paragraphs = Array.from(workBody.querySelectorAll("p"));
-
+  function clkParas() {
+    const div = document.getElementById("work-body");
+    let ps = Array.from(div.querySelectorAll("p"));
     const scrollInterval = setInterval(function () {
-      if (paragraphs.length > 0) {
-        const paragraph = paragraphs[0];
-        paragraph.scrollIntoView();
-        clickOnLastCharacterAndTypeInEmptyContentEditable(paragraph);
-        paragraphs = paragraphs.slice(1); // Remove the processed paragraph
-
-        // Scroll down to reveal the next paragraph
-        paragraph.scrollIntoView();
+      if (ps.length) {
+        const p = ps[0];
+        p.scrollIntoView();
+        cAndT(p);
+        ps = ps.slice(1);
+        p.scrollIntoView();
       } else {
         clearInterval(scrollInterval);
       }
-    }, 0); // Adjust the delay as needed
+    }, 0);
   }
-
-  processParagraphs();
+  clkParas();
 })();
