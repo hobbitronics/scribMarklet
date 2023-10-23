@@ -7,7 +7,7 @@ javascript: (function () {
       const nd = nodes[nodes.length - 1];
       const r = document.createRange();
       r.selectNodeContents(nd);
-      r.collapse(false);
+      r.collapse();
       const sel = window.getSelection();
       sel.removeAllRanges();
       sel.addRange(r);
